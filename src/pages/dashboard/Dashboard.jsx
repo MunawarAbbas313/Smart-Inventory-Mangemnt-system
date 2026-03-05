@@ -13,6 +13,9 @@ import {
     PieChartOutlined,
     FundOutlined,
     CalendarOutlined,
+    FileProtectOutlined,
+    TeamOutlined,
+    ClockCircleOutlined,
 } from '@ant-design/icons';
 import LayoutApp from '../../components/Layout';
 import { getDashboardStats } from '../../services/api';
@@ -161,6 +164,23 @@ const Dashboard = () => {
                 </div>
             )}
 
+            {/* Expiry Alert */}
+            {stats.expiringProducts && stats.expiringProducts.length > 0 && (
+                <div className="low-stock-banner animate-fadeInUp delay-1" style={{ background: 'linear-gradient(135deg, #fff8e1, #fff3e0)', borderColor: '#ffe0b2' }}>
+                    <ClockCircleOutlined className="alert-icon" style={{ color: '#ff8f00' }} />
+                    <div>
+                        <div className="alert-text" style={{ color: '#e65100' }}>
+                            ⏰ {stats.expiringProducts.length} product(s) expiring within 30 days
+                        </div>
+                        <div className="alert-items">
+                            {stats.expiringProducts.map(p => (
+                                <span key={p._id} className="low-stock-tag" style={{ background: '#ffe0b2', color: '#e65100' }}>{p.name} ({p.expiryDate})</span>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Stats Cards */}
             <div className="stats-grid">
                 {[
@@ -170,6 +190,8 @@ const Dashboard = () => {
                     { icon: '👥', value: stats.totalCustomers, label: 'Customers', onClick: () => navigate('/customers') },
                     { icon: '📦', value: stats.totalProducts, label: 'Products', onClick: () => navigate('/products') },
                     { icon: '💵', value: formatPKR(stats.avgOrderValue), label: 'Avg Order Value' },
+                    { icon: '📋', value: stats.pendingPOs || 0, label: 'Pending POs', onClick: () => navigate('/purchase-orders') },
+                    { icon: '🏭', value: stats.totalSuppliers || 0, label: 'Suppliers', onClick: () => navigate('/suppliers') },
                 ].map((s, i) => (
                     <div key={i} className={`stat-card animate-fadeInUp delay-${Math.min(i + 1, 5)}`} onClick={s.onClick} style={s.onClick ? { cursor: 'pointer' } : {}}>
                         <div className="stat-icon">{s.icon}</div>
