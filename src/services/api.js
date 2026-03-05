@@ -1,0 +1,241 @@
+// ============================================================
+// API Service Layer - Mock data for development
+// Includes analytics, date filtering, category insights
+// ============================================================
+
+import { mockUsers, mockProducts, mockCustomers, mockBills } from '../data/mockData';
+
+const delay = (ms = 300) => new Promise(resolve => setTimeout(resolve, ms));
+
+// In-memory stores
+let products = [...mockProducts];
+let customers = [...mockCustomers];
+let bills = [...mockBills];
+let nextProductId = 15;
+let nextCustomerId = 7;
+let nextBillId = 9;
+
+// ---- Auth APIs ----
+export const loginUser = async ({ email, password }) => {
+    await delay(400);
+    const user = mockUsers.find(u => u.email === email && u.password === password);
+    if (!user) throw { response: { data: { message: 'Invalid email or password' } } };
+    const { password: _, ...safe } = user;
+    return { data: { user: safe } };
+};
+
+export const registerUser = async ({ name, email, password }) => {
+    await delay(400);
+    if (mockUsers.find(u => u.email === email))
+        throw { response: { data: { message: 'User already exists' } } };
+    return { data: { message: 'User registered successfully' } };
+};
+
+// ---- Product APIs ----
+export const getProducts = async ({ createdBy, search } = {}) => {
+    await delay(200);
+    let filtered = products.filter(p => !createdBy || p.createdBy === createdBy);
+    if (search) {
+        const q = search.toLowerCase();
+        filtered = filtered.filter(p => p.name.toLowerCase().includes(q));
+    }
+    return { data: filtered };
+};
+
+export const addProduct = async (d) => {
+    await delay(200);
+    const np = { ...d, _id: `prod_${String(nextProductId++).padStart(3, '0')}`, createdAt: new Date().toISOString() };
+    products.push(np);
+    return { data: np };
+};
+
+export const updateProduct = async (d) => {
+    await delay(200);
+    const i = products.findIndex(p => p._id === d.productId);
+    if (i !== -1) { products[i] = { ...products[i], ...d }; return { data: products[i] }; }
+    throw { response: { data: { message: 'Product not found' } } };
+};
+
+export const deleteProduct = async ({ productId }) => {
+    await delay(200);
+    products = products.filter(p => p._id !== productId);
+    return { data: { message: 'Deleted' } };
+};
+
+// ---- Customer APIs ----
+export const getCustomers = async () => { await delay(200); return { data: customers }; };
+
+export const getCustomersByPhone = async ({ phone, createdBy }) => {
+    await delay(150);
+    return { data: customers.filter(c => c.phone.includes(phone) && (!createdBy || c.createdBy === createdBy)) };
+};
+
+export const addCustomer = async (d) => {
+    await delay(200);
+    const nc = { ...d, _id: `cust_${String(nextCustomerId++).padStart(3, '0')}`, createdAt: new Date().toISOString() };
+    customers.push(nc);
+    return { data: { customer: nc } };
+};
+
+export const updateCustomer = async (d) => {
+    await delay(200);
+    const i = customers.findIndex(c => c._id === d.customerId);
+    if (i !== -1) { customers[i] = { ...customers[i], ...d }; return { data: customers[i] }; }
+    throw { response: { data: { message: 'Customer not found' } } };
+};
+
+export const deleteCustomer = async ({ customerId }) => {
+    await delay(200);
+    customers = customers.filter(c => c._id !== customerId);
+    return { data: { message: 'Deleted' } };
+};
+
+// ---- Bill APIs ----
+export const getBills = async ({ createdBy } = {}) => {
+    await delay(200);
+    return { data: bills.filter(b => !createdBy || b.createdBy === createdBy) };
+};
+
+export const addBill = async (d) => {
+    await delay(200);
+    const nb = { ...d, _id: `bill_${String(nextBillId++).padStart(3, '0')}`, createdAt: new Date().toISOString() };
+    bills.push(nb);
+    return { data: nb };
+};
+
+// ---- Dashboard / Analytics APIs ----
+export const getDashboardStats = async ({ createdBy, dateRange } = {}) => {
+    await delay(300);
+
+    let userBills = bills.filter(b => !createdBy || b.createdBy === createdBy);
+
+    // Date range filtering
+    if (dateRange) {
+        const { start, end } = dateRange;
+        if (start) userBills = userBills.filter(b => new Date(b.createdAt) >= new Date(start));
+        if (end) {
+            const endDate = new Date(end);
+            endDate.setHours(23, 59, 59, 999);
+            userBills = userBills.filter(b => new Date(b.createdAt) <= endDate);
+        }
+    }
+
+    const userProducts = products.filter(p => !createdBy || p.createdBy === createdBy);
+    const userCustomers = customers.filter(c => !createdBy || c.createdBy === createdBy);
+
+    const totalRevenue = userBills.reduce((s, b) => s + b.totalAmount, 0);
+    const totalCost = userBills.reduce((s, b) => {
+        return s + b.cartItems.reduce((cs, item) => {
+            const prod = products.find(p => p._id === item._id);
+            return cs + (prod?.cost || 0) * item.quantity;
+        }, 0);
+    }, 0);
+
+    const lowStockProducts = userProducts.filter(p => p.stock > 0 && p.stock <= 5);
+    const outOfStockProducts = userProducts.filter(p => p.stock === 0);
+
+    // Product sales
+    const productSales = {};
+    userBills.forEach(bill => {
+        bill.cartItems.forEach(item => {
+            if (!productSales[item._id]) productSales[item._id] = { name: item.name, totalQty: 0, totalRevenue: 0 };
+            productSales[item._id].totalQty += item.quantity;
+            productSales[item._id].totalRevenue += item.price * item.quantity;
+        });
+    });
+
+    const allProductSales = Object.values(productSales);
+    const topProducts = [...allProductSales].sort((a, b) => b.totalRevenue - a.totalRevenue).slice(0, 5);
+    const lowSellingProducts = [...allProductSales].sort((a, b) => a.totalQty - b.totalQty).slice(0, 5);
+    const hotSellingProducts = [...allProductSales].sort((a, b) => b.totalQty - a.totalQty).slice(0, 5);
+
+    // Category breakdown
+    const categorySales = {};
+    userBills.forEach(bill => {
+        bill.cartItems.forEach(item => {
+            const prod = products.find(p => p._id === item._id);
+            const cat = prod?.category || 'unknown';
+            if (!categorySales[cat]) categorySales[cat] = { category: cat, totalQty: 0, totalRevenue: 0, orders: 0 };
+            categorySales[cat].totalQty += item.quantity;
+            categorySales[cat].totalRevenue += item.price * item.quantity;
+            categorySales[cat].orders += 1;
+        });
+    });
+    const categoryBreakdown = Object.values(categorySales).sort((a, b) => b.totalRevenue - a.totalRevenue);
+
+    // Payment method breakdown
+    const paymentMethods = {};
+    userBills.forEach(b => { const m = b.paymentMethod || 'cash'; paymentMethods[m] = (paymentMethods[m] || 0) + b.totalAmount; });
+
+    // Daily sales (last 7 or within range)
+    const dailySales = [];
+    const days = dateRange?.start && dateRange?.end
+        ? Math.min(Math.ceil((new Date(dateRange.end) - new Date(dateRange.start)) / 86400000) + 1, 30)
+        : 7;
+    const startDate = dateRange?.start ? new Date(dateRange.start) : new Date();
+    if (!dateRange?.start) startDate.setDate(startDate.getDate() - (days - 1));
+
+    for (let i = 0; i < days; i++) {
+        const d = new Date(startDate);
+        d.setDate(d.getDate() + i);
+        const ds = d.toISOString().substring(0, 10);
+        const dayBills = userBills.filter(b => b.createdAt.substring(0, 10) === ds);
+        dailySales.push({
+            date: ds,
+            day: d.toLocaleDateString('en-PK', { weekday: 'short' }),
+            total: dayBills.reduce((s, b) => s + b.totalAmount, 0),
+            orders: dayBills.length,
+        });
+    }
+
+    // Top customers
+    const custSpend = {};
+    userBills.forEach(b => {
+        if (!custSpend[b.customerName]) custSpend[b.customerName] = { name: b.customerName, totalSpent: 0, orders: 0 };
+        custSpend[b.customerName].totalSpent += b.totalAmount;
+        custSpend[b.customerName].orders += 1;
+    });
+    const topCustomers = Object.values(custSpend).sort((a, b) => b.totalSpent - a.totalSpent).slice(0, 5);
+
+    // Profit margins per product
+    const profitMargins = allProductSales.map(ps => {
+        const prod = products.find(p => p.name === ps.name);
+        const cost = (prod?.cost || 0) * ps.totalQty;
+        return { name: ps.name, revenue: ps.totalRevenue, cost, profit: ps.totalRevenue - cost, margin: cost > 0 ? ((ps.totalRevenue - cost) / ps.totalRevenue * 100).toFixed(1) : 0 };
+    }).sort((a, b) => b.profit - a.profit).slice(0, 5);
+
+    return {
+        data: {
+            totalRevenue,
+            totalProfit: totalRevenue - totalCost,
+            totalOrders: userBills.length,
+            totalCustomers: userCustomers.length,
+            totalProducts: userProducts.length,
+            lowStockProducts,
+            outOfStockProducts,
+            topProducts,
+            lowSellingProducts,
+            hotSellingProducts,
+            topCustomers,
+            paymentMethods,
+            dailySales,
+            categoryBreakdown,
+            profitMargins,
+            avgOrderValue: userBills.length > 0 ? totalRevenue / userBills.length : 0,
+        },
+    };
+};
+
+// ---- Global Search ----
+export const globalSearch = async (query) => {
+    await delay(100);
+    if (!query || query.length < 2) return { data: { products: [], customers: [], bills: [] } };
+    const q = query.toLowerCase();
+    return {
+        data: {
+            products: products.filter(p => p.name.toLowerCase().includes(q)).slice(0, 5),
+            customers: customers.filter(c => c.name.toLowerCase().includes(q) || c.phone.includes(q)).slice(0, 5),
+            bills: bills.filter(b => b.customerName.toLowerCase().includes(q) || b._id.toLowerCase().includes(q)).slice(0, 5),
+        },
+    };
+};
