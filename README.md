@@ -1,70 +1,251 @@
-# Getting Started with Create React App
+<div align="center">
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# 🇵🇰 Smart POS System
 
-## Available Scripts
+### Intelligent Point of Sale & Inventory Management
 
-In the project directory, you can run:
+[![React](https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Ant Design](https://img.shields.io/badge/Ant_Design-5.x-0170FE?style=for-the-badge&logo=antdesign&logoColor=white)](https://ant.design/)
+[![Redux](https://img.shields.io/badge/Redux_Toolkit-2.x-764ABC?style=for-the-badge&logo=redux&logoColor=white)](https://redux-toolkit.js.org/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-### `yarn start`
+**A modern, feature-rich POS system built for Pakistani businesses — with real-time analytics, smart inventory alerts, keyboard shortcuts, and a beautiful UI.**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+[Live Demo](#getting-started) · [Features](#-features) · [Screenshots](#-screenshots) · [Getting Started](#-getting-started) · [Tech Stack](#-tech-stack)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `yarn test`
+</div>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## ✨ Features
 
-### `yarn build`
+### 📊 Analytics Dashboard
+- **Real-time business overview** — Revenue, profit, orders, customers at a glance
+- **Date range filters** — Today, This Week, This Month, All Time, or custom range
+- **Sales trend chart** — Daily sales bar chart with order counts
+- **🔥 Hot selling items** — Top products by quantity sold
+- **📉 Low selling items** — Underperformers that need attention
+- **📊 Category breakdown** — Visual bars for each product category
+- **💹 Profit margins** — Per-product profit with margin percentages
+- **💳 Payment breakdown** — Cash, Card, Easypaisa, JazzCash
+- **👥 Top customers** — Spending leaderboard with order counts
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 🛒 POS System (Point of Sale)
+- **Category filters** — Pizzas, Burgers, Drinks, Desi with one-click filtering
+- **Smart product cards** — Beautiful cards with hover animations
+- **Discount display** — Discount badges, strikethrough prices, "Save Rs. XXX"
+- **Stock visualization** — Progress bars showing inventory levels
+- **Out-of-stock detection** — Products automatically marked unavailable
+- **One-click add to cart** — Instant cart updates with success feedback
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 📦 Product Management
+- **Full CRUD** — Add, edit, delete products with modal forms
+- **Live search** — Debounced search-as-you-type
+- **Cost tracking** — Track cost price for profit calculation
+- **Stock monitoring** — Color-coded stock levels (green/red)
+- **Category support** — Pizzas, Burgers, Drinks, Desi
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 🧾 Invoice & Billing
+- **Smart customer lookup** — Enter phone number, auto-fills name & address
+- **Auto customer creation** — New customers created automatically during billing
+- **Stock validation** — Prevents overselling with real-time stock checks
+- **Tax calculation** — Automatic 5% tax computation
+- **Multiple payment methods** — Cash, Card, Easypaisa, JazzCash
+- **Invoice preview** — Detailed invoice modal with print support
+- **🖨️ Print invoices** — One-click print with react-to-print
 
-### `yarn eject`
+### 👥 Customer Management
+- **Customer directory** — Full list with contact info and join dates
+- **Phone search** — Search customers by phone number (+92)
+- **CRUD operations** — Add, edit, delete with validation
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 🔍 Global Search (`Ctrl+K`)
+- **Search everywhere** — Products, customers, and bills from one place
+- **Live results** — Instant results as you type
+- **Quick navigation** — Click any result to navigate
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### ⌨️ Keyboard Shortcuts
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl + K` | Open Global Search |
+| `Alt + 1` | Go to Dashboard |
+| `Alt + 2` | Go to POS |
+| `Alt + 3` | Go to Products |
+| `Alt + 4` | Go to Customers |
+| `Alt + 5` | Go to Bills |
+| `Alt + C` | Open Cart |
+| `Alt + /` | Show All Shortcuts |
+| `Escape` | Close any modal/overlay |
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 📖 Built-in Guide
+- **How to Use page** — Comprehensive documentation right inside the app
+- **Quick start guide** — Get started in 5 steps
+- **Pro tips** — Best practices for efficient POS usage
+- **Shortcuts reference** — All keyboard shortcuts in one place
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 🎨 Design & UX
+- **9 CSS animations** — fadeInUp, scaleIn, pulse, float, bounceIn, etc.
+- **Staggered animations** — Cards and sections animate in sequence
+- **Hover effects** — Image zoom, card lift, button glow
+- **Responsive design** — Works on desktop, tablet, and mobile
+- **Premium footer** — Branded footer with quick links and shortcuts hint
+- **Inter font** — Modern, clean typography throughout
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 📸 Screenshots
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Dashboard — Analytics Overview
+> Real-time business metrics with date filtering, sales charts, and smart insights
 
-### Code Splitting
+### POS — Product Browsing
+> Category filters, discount badges, stock bars, and one-click cart
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Products — Inventory Management
+> Full CRUD with search, stock monitoring, and inline cart actions
 
-### Analyzing the Bundle Size
+### Bills — Invoice Management
+> View, preview, and print invoices with payment method tracking
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## 🚀 Getting Started
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Prerequisites
+- **Node.js** v16+ ([Download](https://nodejs.org/))
+- **npm** v8+ (comes with Node.js)
 
-### Advanced Configuration
+### Installation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```bash
+# 1. Clone the repository
+git clone https://github.com/MunawarAbbas313/Smart-Inventory-Mangemnt-system.git
 
-### Deployment
+# 2. Navigate to client directory
+cd Smart-Inventory-Mangemnt-system
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+# 3. Install dependencies
+npm install
 
-### `yarn build` fails to minify
+# 4. Start development server
+npm run dev
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The app will open at **http://localhost:3000** 🎉
+
+### Test Credentials
+
+| Role | Email | Password |
+|------|-------|----------|
+| 👑 Admin | `admin@test.com` | `admin123` |
+| 🧑‍💼 Agent | `agent@test.com` | `agent123` |
+| 👤 User | `user@test.com` | `user123` |
+
+---
+
+## 🛠️ Tech Stack
+
+| Technology | Purpose |
+|-----------|---------|
+| **React 18** | UI framework with hooks |
+| **Vite 5** | Lightning-fast build tool & dev server |
+| **Ant Design 5** | UI component library (CSS-in-JS) |
+| **Redux Toolkit** | State management (cart, loading) |
+| **React Router 6** | Client-side routing |
+| **react-to-print** | Invoice printing |
+| **dayjs** | Date handling for filters |
+
+---
+
+## 📁 Project Structure
+
+```
+src/
+├── asset/images/          # Brand logos and icons
+├── components/
+│   ├── GlobalSearch.jsx   # Ctrl+K search modal
+│   ├── Layout.jsx         # Main layout with sidebar, header, footer
+│   ├── Product.jsx        # Enhanced product card component
+│   └── Spinner.jsx        # Loading overlay
+├── data/
+│   └── mockData.js        # Pakistani test data (users, products, etc.)
+├── pages/
+│   ├── dashboard/         # Analytics dashboard with date filter
+│   ├── home/              # POS system (browse & add to cart)
+│   ├── products/          # Product management (CRUD)
+│   ├── cart/              # Shopping cart & invoice generation
+│   ├── bills/             # Invoice list & print
+│   ├── customers/         # Customer management (CRUD)
+│   ├── guide/             # How to Use documentation
+│   ├── login/             # Login with test credentials
+│   └── register/          # User registration
+├── redux/
+│   ├── rootReducer.js     # Cart & loading state
+│   └── store.js           # Redux Toolkit store
+├── services/
+│   └── api.js             # Mock API with analytics engine
+├── App.jsx                # Routes & protected routes
+├── main.jsx               # Entry point
+└── index.css              # Design system & animations
+```
+
+---
+
+## 🌟 What Makes This "Smart"?
+
+Unlike traditional POS systems, Smart POS offers:
+
+| Feature | Traditional POS | Smart POS ✅ |
+|---------|----------------|-------------|
+| Stock alerts | Manual checking | **Automatic low-stock & out-of-stock alerts** |
+| Analytics | Basic sales total | **Revenue, profit, margins, top sellers, categories** |
+| Customer lookup | Manual entry every time | **Auto-fill by phone number** |
+| Navigation | Mouse-only | **Full keyboard shortcuts** |
+| Search | Page-by-page | **Global search across everything** |
+| Date filtering | No filtering | **Today, week, month, custom range** |
+| Profit tracking | Not available | **Per-product profit margins** |
+| User guide | External docs | **Built-in How to Use page** |
+
+---
+
+## 🔮 Roadmap
+
+- [ ] Connect to backend API (Node.js + MongoDB)
+- [ ] User role-based access control (Admin vs Agent vs User)
+- [ ] Export reports to PDF/Excel
+- [ ] Dark mode theme toggle
+- [ ] Barcode scanner integration
+- [ ] Multi-branch support
+- [ ] SMS notifications for low stock (via Twilio)
+- [ ] Urdu language support
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+
+### Built with ❤️ by Munawar Abbas
+
+🇵🇰 Made in Pakistan
+
+[![GitHub](https://img.shields.io/badge/GitHub-MunawarAbbas313-181717?style=for-the-badge&logo=github)](https://github.com/MunawarAbbas313)
+
+</div>
